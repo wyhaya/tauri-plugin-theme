@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeDevCommand": "pnpm dev",
-    "beforeBuildCommand": "pnpm build",
+    "beforeDevCommand": "pnpm dev:web",
+    "beforeBuildCommand": "pnpm build:web",
     "devPath": "http://localhost:1420",
     "distDir": "../dist",
     "withGlobalTauri": true
@@ -13,6 +13,10 @@
   "tauri": {
     "allowlist": {
       "all": false,
+      "dialog": {
+        "all": false,
+        "message": true
+      },
       "shell": {
         "all": false,
         "open": true
@@ -21,7 +25,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.dev",
+      "identifier": "tauri.plugin.theme",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",

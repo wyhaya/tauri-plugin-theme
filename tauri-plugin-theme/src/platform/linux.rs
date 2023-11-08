@@ -1,4 +1,4 @@
-use crate::Theme;
+use crate::{save_theme_value, Theme};
 use futures_lite::StreamExt;
 use gtk::{traits::SettingsExt, Settings};
 use once_cell::sync::Lazy;
@@ -10,7 +10,8 @@ use tokio::sync::{
 };
 
 #[command]
-pub async fn set_theme<R: Runtime>(app: AppHandle<R>, theme: Theme) -> Result<(), ()> {
+pub fn set_theme<R: Runtime>(app: AppHandle<R>, theme: Theme) -> Result<(), &'static str> {
+    save_theme_value(&app.config(), theme);
     match theme {
         Theme::Auto => {
             async_runtime::spawn(start_proxy(app));

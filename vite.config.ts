@@ -7,5 +7,8 @@ export default defineConfig(async () => ({
     strictPort: true,
   },
   root: "./src/",
+  build: {
+    outDir: "../dist/",
+  },
   envPrefix: ["VITE_", "TAURI_"],
 }));

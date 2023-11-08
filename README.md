@@ -11,9 +11,11 @@ cargo add tauri-plugin-theme
 ```rust
 use tauri_plugin_theme::ThemePlugin;
 
+let mut ctx = tauri::generate_context!();
 tauri::Builder::default()
-    // Init plugin !!!
-    .plugin(ThemePlugin::init())
+    // Init plugin and auto restore window theme !!!
+    .plugin(ThemePlugin::init(ctx.config_mut()))
+    ...
 ```
 
 ## Usage
@@ -35,13 +37,17 @@ invoke("plugin:theme|set_theme", {
 invoke("plugin:theme|set_theme", {
   theme: "dark",
 });
+
+// Get saved theme (default: auto)
+const theme = await invoke("plugin:theme|get_theme");
 ```
 
 ## Support
 
 | MacOS | Linux | Windows |
 | ----- | ----- | ------- |
-| ✅    | ✅    | ❌      |
+| ✅    | ✅    | ✅      |
 
-- On the `Linux` platform, it has not been extensively tested. If you encounter any issues, please submit an issue.
-- Currently does not support the `Windows` platform, PR are welcome.
+## Note
+- On `Windows` platform, when calling `set_theme`, the app will restart.
+- On `Linux` platform, it has not been extensively tested. If you encounter any issues, please submit an issue.
