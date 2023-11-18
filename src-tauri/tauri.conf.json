@@ -10,18 +10,12 @@
     "productName": "example",
     "version": "0.0.0"
   },
+  "plugins": {
+    "shell": {
+      "open": true
+    }
+  },
   "tauri": {
-    "allowlist": {
-      "all": false,
-      "dialog": {
-        "all": false,
-        "message": true
-      },
-      "shell": {
-        "all": false,
-        "open": true
-      }
-    },
     "bundle": {
       "active": true,
       "targets": "all",
