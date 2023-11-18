@@ -3,15 +3,15 @@ mod platform;
 use platform::set_theme;
 use serde::{Deserialize, Serialize};
 use std::fs;
-use tauri::api::path::app_config_dir;
+use std::path::PathBuf;
 use tauri::plugin::{Builder, TauriPlugin};
 use tauri::utils::config::TauriConfig;
+use tauri::Manager;
 use tauri::{command, generate_handler, Config};
 use tauri::{AppHandle, Runtime};
 
 const PLUGIN_NAME: &str = "theme";
 const CONFIG_FILENAME: &str = "tauri-plugin-theme";
-const ERROR_MESSAGE: &str = "Get app config dir failed";
 
 pub struct ThemePlugin;
 
@@ -23,7 +23,9 @@ impl ThemePlugin {
             .invoke_handler(generate_handler![get_theme, set_theme])
             .on_event(|app, e| {
                 if let RunEvent::Ready = e {
-                    let theme = saved_theme_value(&app.config());
+                    let theme = saved_theme_value(
+                        &app.path().config_dir().expect("failed to get config dir"),
+                    );
                     let _ = set_theme(app.clone(), theme);
                 }
             })
@@ -60,7 +62,7 @@ impl ThemePlugin {
 
 #[command]
 fn get_theme<R: Runtime>(app: AppHandle<R>) -> Result<Theme, ()> {
-    let theme = saved_theme_value(&app.config());
+    let theme = saved_theme_value(&app.path().config_dir().expect("failed to get config dir"));
     Ok(theme)
 }
 
@@ -92,20 +94,16 @@ impl ToString for Theme {
     }
 }
 
-pub(crate) fn saved_theme_value(config: &Config) -> Theme {
-    let p = app_config_dir(config)
-        .expect(ERROR_MESSAGE)
-        .join(CONFIG_FILENAME);
-    fs::read_to_string(p)
+pub(crate) fn saved_theme_value(path: &PathBuf) -> Theme {
+    fs::read_to_string(path)
         .map(Theme::from)
         .unwrap_or(Theme::Auto)
 }
 
-pub(crate) fn save_theme_value(config: &Config, theme: Theme) {
-    let dir = app_config_dir(config).expect(ERROR_MESSAGE);
-    if !dir.exists() {
-        let _ = std::fs::create_dir_all(&dir);
+pub(crate) fn save_theme_value(path: &PathBuf, theme: Theme) {
+    if !path.exists() {
+        let _ = std::fs::create_dir_all(&path);
     }
-    let p = dir.join(CONFIG_FILENAME);
+    let p = path.join(CONFIG_FILENAME);
     let _ = fs::write(p, theme.to_string());
 }
