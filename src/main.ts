@@ -1,4 +1,4 @@
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/primitives";
 
 type Theme = "auto" | "light" | "dark";
 
