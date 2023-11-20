@@ -35,7 +35,7 @@ impl ThemePlugin {
         Builder::new(PLUGIN_NAME)
             .invoke_handler(generate_handler![get_theme, set_theme])
             .setup(|app| {
-                let theme = saved_theme_value(&app.config());
+                let theme = saved_theme_value(&app);
                 let _ = set_theme(app.clone(), theme);
                 Ok(())
             })
@@ -44,6 +44,7 @@ impl ThemePlugin {
 
     #[cfg(target_os = "windows")]
     pub fn init<R: Runtime>(config: &mut Config) -> TauriPlugin<R, TauriConfig> {
+        /*
         let theme = saved_theme_value(config);
         for window in &mut config.tauri.windows {
             match theme {
@@ -52,6 +53,7 @@ impl ThemePlugin {
                 Theme::Dark => window.theme = Some(tauri::Theme::Dark),
             }
         }
+         */
         Builder::new(PLUGIN_NAME)
             .invoke_handler(generate_handler![get_theme, set_theme])
             .build()
