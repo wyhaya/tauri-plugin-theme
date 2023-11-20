@@ -18,12 +18,11 @@ pub struct ThemePlugin;
 impl ThemePlugin {
     #[cfg(target_os = "macos")]
     pub fn init<R: Runtime>(_config: &mut Config) -> TauriPlugin<R, TauriConfig> {
-        use tauri::RunEvent;
         Builder::new(PLUGIN_NAME)
             .invoke_handler(generate_handler![get_theme, set_theme])
             .on_event(|app, e| {
-                if let RunEvent::Ready = e {
-                    let theme = saved_theme_value(app);
+                if let tauri::RunEvent::Ready = e {
+                    let theme = saved_theme_value(&app);
                     let _ = set_theme(app.clone(), theme);
                 }
             })
@@ -44,9 +43,7 @@ impl ThemePlugin {
 
     #[cfg(target_os = "windows")]
     pub fn init<R: Runtime>(config: &mut Config) -> TauriPlugin<R, TauriConfig> {
-        /*
-        #TODO: support windows
-        let theme = saved_theme_value(config);
+        let theme = saved_theme_value_from_config(&config);
         for window in &mut config.tauri.windows {
             match theme {
                 Theme::Auto => window.theme = None,
@@ -54,7 +51,6 @@ impl ThemePlugin {
                 Theme::Dark => window.theme = Some(tauri::Theme::Dark),
             }
         }
-         */
         Builder::new(PLUGIN_NAME)
             .invoke_handler(generate_handler![get_theme, set_theme])
             .build()
@@ -95,8 +91,21 @@ impl ToString for Theme {
     }
 }
 
+#[cfg(target_os = "windows")]
+fn saved_theme_value_from_config(config: &Config) -> Theme {
+    if let Some(dir) = dirs_next::config_dir() {
+        let p = dir
+            .join(&config.tauri.bundle.identifier)
+            .join(CONFIG_FILENAME);
+        return fs::read_to_string(p)
+            .map(Theme::from)
+            .unwrap_or(Theme::Auto);
+    }
+    Theme::Auto
+}
+
 pub(crate) fn saved_theme_value<R: Runtime>(app: &AppHandle<R>) -> Theme {
-    let config_dir = app.path().config_dir().expect(ERROR_MESSAGE);
+    let config_dir = app.path().app_config_dir().expect(ERROR_MESSAGE);
     let p = config_dir.join(CONFIG_FILENAME);
     fs::read_to_string(p)
         .map(Theme::from)
@@ -104,7 +113,7 @@ pub(crate) fn saved_theme_value<R: Runtime>(app: &AppHandle<R>) -> Theme {
 }
 
 pub(crate) fn save_theme_value<R: Runtime>(app: &AppHandle<R>, theme: Theme) {
-    let config_dir = app.path().config_dir().expect(ERROR_MESSAGE);
+    let config_dir = app.path().app_config_dir().expect(ERROR_MESSAGE);
     if !config_dir.exists() {
         let _ = std::fs::create_dir_all(&config_dir);
     }

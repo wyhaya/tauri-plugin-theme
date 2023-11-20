@@ -1,6 +1,6 @@
 [package]
 name = "tauri-plugin-theme"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/wyhaya/tauri-plugin-theme"
@@ -18,8 +18,9 @@ cocoa = "0.25"
 [target."cfg(target_os = \"linux\")".dependencies]
 gtk = "0.18"
 tintanum = "0.1"
-futures-lite = "1.13"
+futures-lite = "2.0"
 tokio = { version = "1", features = ["macros"] }
 once_cell = "1.18"
 
 [target."cfg(target_os = \"windows\")".dependencies]
+dirs-next = "2.0"
