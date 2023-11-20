@@ -1,6 +1,6 @@
 use crate::{save_theme_value, Theme};
 use futures_lite::StreamExt;
-use gtk::{traits::SettingsExt, Settings};
+use gtk::prelude::GtkSettingsExt;
 use once_cell::sync::Lazy;
 use tauri::{async_runtime, command, AppHandle, Runtime};
 use tintanum::{SchemePreference, SchemeProxy};
