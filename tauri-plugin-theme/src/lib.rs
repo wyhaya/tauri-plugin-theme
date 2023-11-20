@@ -34,7 +34,7 @@ impl ThemePlugin {
     pub fn init<R: Runtime>(_config: &mut Config) -> TauriPlugin<R, TauriConfig> {
         Builder::new(PLUGIN_NAME)
             .invoke_handler(generate_handler![get_theme, set_theme])
-            .setup(|app| {
+            .setup(|app, _| {
                 let theme = saved_theme_value(&app);
                 let _ = set_theme(app.clone(), theme);
                 Ok(())
@@ -45,6 +45,7 @@ impl ThemePlugin {
     #[cfg(target_os = "windows")]
     pub fn init<R: Runtime>(config: &mut Config) -> TauriPlugin<R, TauriConfig> {
         /*
+        #TODO: support windows
         let theme = saved_theme_value(config);
         for window in &mut config.tauri.windows {
             match theme {
