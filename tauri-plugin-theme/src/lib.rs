@@ -103,7 +103,7 @@ pub(crate) fn saved_theme_value<R: Runtime>(app: &AppHandle<R>) -> Theme {
         .unwrap_or(Theme::Auto)
 }
 
-pub(crate) fn save_theme_value<R: Runtime>(app: AppHandle<R>, theme: Theme) {
+pub(crate) fn save_theme_value<R: Runtime>(app: &AppHandle<R>, theme: Theme) {
     let config_dir = app.path().config_dir().expect(ERROR_MESSAGE);
     if !config_dir.exists() {
         let _ = std::fs::create_dir_all(&config_dir);
