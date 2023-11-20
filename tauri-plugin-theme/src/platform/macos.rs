@@ -7,10 +7,7 @@ use tauri::{command, AppHandle, Manager, Runtime};
 
 #[command]
 pub fn set_theme<R: Runtime>(app: AppHandle<R>, theme: Theme) -> Result<(), &'static str> {
-    save_theme_value(
-        &app.path().config_dir().expect("failed to get config dir"),
-        theme,
-    );
+    save_theme_value(app.clone(), theme);
     for window in app.windows().values() {
         let ptr = window.ns_window().map_err(|_| "Invalid window handle")?;
         unsafe {

@@ -11,7 +11,7 @@ use tokio::sync::{
 
 #[command]
 pub fn set_theme<R: Runtime>(app: AppHandle<R>, theme: Theme) -> Result<(), &'static str> {
-    save_theme_value(&app.config(), theme);
+    save_theme_value(app, theme);
     match theme {
         Theme::Auto => {
             async_runtime::spawn(start_proxy(app));
