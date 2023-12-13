@@ -35,7 +35,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "example",
+        "title": "tauri-plugin-theme",
         "width": 800,
         "height": 600
       }

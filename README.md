@@ -1,6 +1,16 @@
 # tauri-plugin-theme
 
-Dynamically change Tauri App theme
+Tauri currently doesn't support dynamically change app theme, this plugin makes up for that.
+
+https://github.com/wyhaya/tauri-plugin-theme/assets/23690145/2422ce95-418d-4f07-adf5-e78af2552f51
+
+## Run example
+
+```
+cd [this-repo]
+pnpm i
+pnpm dev
+```
 
 ## Install
 
@@ -17,7 +27,9 @@ let mut ctx = tauri::generate_context!();
 tauri::Builder::default()
     // Init plugin and auto restore window theme !!!
     .plugin(ThemePlugin::init(ctx.config_mut()))
-    ...
+    // ...
+    .run(ctx)
+    // ...
 ```
 
 ## Usage
@@ -41,6 +53,8 @@ invoke("plugin:theme|set_theme", {
 // Get saved theme (default: auto)
 const theme = await invoke("plugin:theme|get_theme");
 ```
+
+When you call `set_theme`, the theme will `auto saved`, when the App is restarted, theme will be `auto restored`.
 
 ## Support
 
