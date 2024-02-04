@@ -1,6 +1,6 @@
 [package]
 name = "tauri-plugin-theme"
-version = "0.3.0"
+version = "0.4.0"
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/wyhaya/tauri-plugin-theme"
@@ -9,7 +9,7 @@ keywords = ["tauri", "plugin", "theme"]
 readme = "README.md"
 
 [dependencies]
-tauri = { version = "2.0.0-alpha" }
+tauri = { version = "2.0.0-beta" }
 serde = { version = "1", features = ["derive"] }
 
 [target."cfg(target_os = \"macos\")".dependencies]
