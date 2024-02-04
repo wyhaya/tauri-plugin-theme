@@ -10,48 +10,44 @@ const PLUGIN_NAME: &str = "theme";
 const CONFIG_FILENAME: &str = "tauri-plugin-theme";
 const ERROR_MESSAGE: &str = "Get app config dir failed";
 
-pub struct ThemePlugin;
-
-impl ThemePlugin {
-    #[cfg(target_os = "macos")]
-    pub fn init<R: Runtime>(_config: &mut Config) -> TauriPlugin<R> {
-        Builder::new(PLUGIN_NAME)
-            .invoke_handler(generate_handler![get_theme, set_theme])
-            .on_event(|app, e| {
-                if let tauri::RunEvent::Ready = e {
-                    let theme = saved_theme_value(&app);
-                    let _ = set_theme(app.clone(), theme);
-                }
-            })
-            .build()
-    }
-
-    #[cfg(target_os = "linux")]
-    pub fn init<R: Runtime>(_config: &mut Config) -> TauriPlugin<R> {
-        Builder::new(PLUGIN_NAME)
-            .invoke_handler(generate_handler![get_theme, set_theme])
-            .setup(|app, _| {
+#[cfg(target_os = "macos")]
+pub fn init<R: Runtime>(_config: &mut Config) -> TauriPlugin<R> {
+    Builder::new(PLUGIN_NAME)
+        .invoke_handler(generate_handler![get_theme, set_theme])
+        .on_event(|app, e| {
+            if let tauri::RunEvent::Ready = e {
                 let theme = saved_theme_value(&app);
                 let _ = set_theme(app.clone(), theme);
-                Ok(())
-            })
-            .build()
-    }
-
-    #[cfg(target_os = "windows")]
-    pub fn init<R: Runtime>(config: &mut Config) -> TauriPlugin<R> {
-        let theme = saved_theme_value_from_config(&config);
-        for window in &mut config.tauri.windows {
-            match theme {
-                Theme::Auto => window.theme = None,
-                Theme::Light => window.theme = Some(tauri::Theme::Light),
-                Theme::Dark => window.theme = Some(tauri::Theme::Dark),
             }
+        })
+        .build()
+}
+
+#[cfg(target_os = "linux")]
+pub fn init<R: Runtime>(_config: &mut Config) -> TauriPlugin<R> {
+    Builder::new(PLUGIN_NAME)
+        .invoke_handler(generate_handler![get_theme, set_theme])
+        .setup(|app, _| {
+            let theme = saved_theme_value(&app);
+            let _ = set_theme(app.clone(), theme);
+            Ok(())
+        })
+        .build()
+}
+
+#[cfg(target_os = "windows")]
+pub fn init<R: Runtime>(config: &mut Config) -> TauriPlugin<R> {
+    let theme = saved_theme_value_from_config(&config);
+    for window in &mut config.tauri.windows {
+        match theme {
+            Theme::Auto => window.theme = None,
+            Theme::Light => window.theme = Some(tauri::Theme::Light),
+            Theme::Dark => window.theme = Some(tauri::Theme::Dark),
         }
-        Builder::new(PLUGIN_NAME)
-            .invoke_handler(generate_handler![get_theme, set_theme])
-            .build()
     }
+    Builder::new(PLUGIN_NAME)
+        .invoke_handler(generate_handler![get_theme, set_theme])
+        .build()
 }
 
 #[command]

@@ -9,7 +9,7 @@ https://github.com/wyhaya/tauri-plugin-theme/assets/23690145/2422ce95-418d-4f07-
 ```
 cd [this-repo]
 pnpm i
-pnpm dev
+pnpm tauri dev
 ```
 
 ## Install
@@ -26,7 +26,7 @@ use tauri_plugin_theme::ThemePlugin;
 let mut ctx = tauri::generate_context!();
 tauri::Builder::default()
     // Init plugin and auto restore window theme !!!
-    .plugin(ThemePlugin::init(ctx.config_mut()))
+    .plugin(tauri_plugin_theme::init(ctx.config_mut()))
     // ...
     .run(ctx)
     // ...
@@ -55,6 +55,20 @@ const theme = await invoke("plugin:theme|get_theme");
 ```
 
 When you call `set_theme`, the theme will `auto saved`, when the App is restarted, theme will be `auto restored`.
+
+> If you're using tauri@v2 you'll also need to add the plugin's permissions file
+
+Add file `src-tauri/theme.json`
+
+```json
+{
+  "$schema": "./schemas/desktop-schema.json",
+  "identifier": "main-theme-capability",
+  "description": "tauri-plugin-theme",
+  "windows": ["main"],
+  "permissions": ["theme:allow-set-theme", "theme:allow-get-theme"]
+}
+```
 
 ## Support
 

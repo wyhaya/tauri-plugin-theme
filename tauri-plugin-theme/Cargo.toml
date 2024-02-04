@@ -7,6 +7,10 @@ repository = "https://github.com/wyhaya/tauri-plugin-theme"
 description = "Dynamically change Tauri App theme"
 keywords = ["tauri", "plugin", "theme"]
 readme = "README.md"
+links = "tauri-plugin-theme"
+
+[build-dependencies]
+tauri-plugin = { version = "2.0.0-beta.0", features = ["build"] }
 
 [dependencies]
 tauri = { version = "2.0.0-beta" }
