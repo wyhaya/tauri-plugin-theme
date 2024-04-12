@@ -44,16 +44,15 @@ impl ThemePlugin {
 
     #[cfg(target_os = "windows")]
     pub fn init<R: Runtime>(config: &mut Config) -> TauriPlugin<R, TauriConfig> {
-        let theme = saved_theme_value(config);
-        for window in &mut config.tauri.windows {
-            match theme {
-                Theme::Auto => window.theme = None,
-                Theme::Light => window.theme = Some(tauri::Theme::Light),
-                Theme::Dark => window.theme = Some(tauri::Theme::Dark),
-            }
-        }
+        use tauri::RunEvent;
         Builder::new(PLUGIN_NAME)
             .invoke_handler(generate_handler![get_theme, set_theme])
+            .on_event(|app, e| {
+                if let RunEvent::Ready = e {
+                    let theme = saved_theme_value(&app.config());
+                    let _ = set_theme(app.clone(), theme);
+                }
+            })
             .build()
     }
 }
