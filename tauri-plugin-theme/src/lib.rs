@@ -91,7 +91,7 @@ impl ToString for Theme {
     }
 }
 
-pub(crate) fn saved_theme_value(config: &Config) -> Theme {
+pub fn saved_theme_value(config: &Config) -> Theme {
     let p = app_config_dir(config)
         .expect(ERROR_MESSAGE)
         .join(CONFIG_FILENAME);
@@ -100,7 +100,7 @@ pub(crate) fn saved_theme_value(config: &Config) -> Theme {
         .unwrap_or(Theme::Auto)
 }
 
-pub(crate) fn save_theme_value(config: &Config, theme: Theme) {
+pub fn save_theme_value(config: &Config, theme: Theme) {
     let dir = app_config_dir(config).expect(ERROR_MESSAGE);
     if !dir.exists() {
         let _ = std::fs::create_dir_all(&dir);
