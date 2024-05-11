@@ -10,7 +10,7 @@ use tokio::sync::{
 };
 
 #[command]
-pub fn set_theme<R: Runtime>(app: AppHandle<R>, theme: Theme) -> Result<(), &'static str> {
+pub fn cmd_set_theme<R: Runtime>(app: AppHandle<R>, theme: Theme) -> Result<(), &'static str> {
     save_theme_value(&app.config(), theme);
     match theme {
         Theme::Auto => {
