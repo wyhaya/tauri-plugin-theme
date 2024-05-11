@@ -1,6 +1,6 @@
 [package]
 name = "tauri-plugin-theme-v1"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["wyhaya", "kuyoonjo"]
 edition = "2021"
 license = "MIT"

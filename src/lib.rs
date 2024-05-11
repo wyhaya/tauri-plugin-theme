@@ -113,6 +113,6 @@ pub fn set_theme<R: Runtime>(app: AppHandle<R>, theme: Theme) -> Result<(), &'st
     cmd_set_theme(app, theme)
 }
 
-pub fn get_theme<R: Runtime>(app: AppHandle<R>) -> Result<Theme, ()>{
-    cmd_get_theme(app)
+pub fn get_theme(config: &Config) -> Theme {
+    saved_theme_value(config)
 }

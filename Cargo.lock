@@ -3187,7 +3187,7 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-theme-v1"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "cocoa 0.25.0",
  "futures-lite 1.13.0",
