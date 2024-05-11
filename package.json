@@ -1,8 +1,7 @@
 {
   "name": "@kuyoonjo/tauri-plugin-theme-api",
   "version": "0.2.0",
-  "author": "lzhida <zhidal@qq.com>",
-  "description": "A tauri plugin developed based on Serialport.",
+  "description": "Dynamically change Tauri App theme",
   "type": "module",
   "files": [
     "webview-dist"
