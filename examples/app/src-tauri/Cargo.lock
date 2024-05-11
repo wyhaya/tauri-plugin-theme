@@ -902,7 +902,7 @@ dependencies = [
  "serde_json",
  "tauri",
  "tauri-build",
- "tauri-plugin-theme",
+ "tauri-plugin-theme-v1",
 ]
 
 [[package]]
@@ -3215,7 +3215,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "tauri-plugin-theme"
+name = "tauri-plugin-theme-v1"
 version = "0.2.0"
 dependencies = [
  "cocoa 0.25.0",

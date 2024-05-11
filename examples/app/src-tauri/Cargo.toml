@@ -10,7 +10,7 @@ tauri-build = { version = "1.4", features = [] }
 tauri = { version = "1.4", features = [ "dialog-message", "shell-open"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-tauri-plugin-theme = { path = "../tauri-plugin-theme" }
+tauri-plugin-theme-v1 = { path = "../../../" }
 
 [features]
 custom-protocol = ["tauri/custom-protocol"]

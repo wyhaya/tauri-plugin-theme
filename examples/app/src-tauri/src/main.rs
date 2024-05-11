@@ -1,37 +1,3 @@
-# tauri-plugin-theme-v1
-
-Dynamically change Tauri App theme
-
-## Install
-
-```bash
-cargo add tauri-plugin-theme-v1
-```
-
-```rust
-use tauri_plugin_theme_v1::ThemePlugin;
-
-let mut ctx = tauri::generate_context!();
-tauri::Builder::default()
-    // Init plugin and auto restore window theme !!!
-    .plugin(ThemePlugin::init(ctx.config_mut()))
-    ...
-```
-
-## Usage
-
-```javascript
-import { getTheme, setTheme, Theme } from "@kuyoonjo/tauri-plugin-theme-api";
-
-await setTheme(Theme.Auto);
-await setTheme(Theme.Light);
-await setTheme(Theme.Dark);
-
-const theme = await getTheme();
-
-```
-
-```rust
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use tauri_plugin_theme_v1::{ThemePlugin, get_theme, set_theme, Theme};
@@ -75,14 +41,3 @@ fn main() {
         .run(ctx)
         .expect("error while running tauri application");
 }
-
-```
-
-## Support
-
-| MacOS | Linux | Windows |
-| ----- | ----- | ------- |
-| ✅    | ✅    | ✅      |
-
-## Note
-- On `Linux` platform, it has not been extensively tested. If you encounter any issues, please submit an issue.

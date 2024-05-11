@@ -1,11 +1,13 @@
 [package]
-name = "tauri-plugin-theme"
+name = "tauri-plugin-theme-v1"
 version = "0.2.0"
+authors = ["wyhaya", "kuyoonjo"]
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/wyhaya/tauri-plugin-theme"
 description = "Dynamically change Tauri App theme"
 keywords = ["tauri", "plugin", "theme"]
+exclude = ["/examples", "/webview-dist", "/webview-src", "node_modules"]
 readme = "README.md"
 
 [dependencies]

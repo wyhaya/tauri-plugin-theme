@@ -6,10 +6,10 @@ mod macos;
 mod windows;
 
 #[cfg(target_os = "macos")]
-pub use macos::set_theme;
+pub use macos::cmd_set_theme;
 
 #[cfg(target_os = "linux")]
-pub use linux::set_theme;
+pub use linux::cmd_set_theme;
 
 #[cfg(target_os = "windows")]
-pub use windows::set_theme;
+pub use windows::cmd_set_theme;

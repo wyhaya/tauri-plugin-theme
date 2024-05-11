@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:web": "vite",
+    "build:web": "vite build",
+    "dev": "tauri dev",
+    "build": "tauri build"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^1.5.1",
+    "@kuyoonjo/tauri-plugin-theme-api": "link:../../"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.5.6",
+    "typescript": "^5.2.2",
+    "vite": "^4.5.0"
+  }
+}

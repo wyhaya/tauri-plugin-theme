@@ -1,14 +1,12 @@
-import { defineConfig } from "vite";
+import { defineConfig } from 'vite'
 
-export default defineConfig(async () => ({
-  clearScreen: false,
-  server: {
-    port: 1420,
-    strictPort: true,
-  },
-  root: "./src/",
+export default defineConfig({
   build: {
-    outDir: "../dist/",
-  },
-  envPrefix: ["VITE_", "TAURI_"],
-}));
+    lib: {
+      entry: './webview-src/index.ts',
+      name: 'index',
+      fileName: 'index'
+    },
+    outDir: 'webview-dist'
+  }
+})

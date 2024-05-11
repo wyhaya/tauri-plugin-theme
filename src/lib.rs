@@ -1,6 +1,6 @@
 mod platform;
 
-use platform::set_theme;
+use platform::cmd_set_theme;
 use serde::{Deserialize, Serialize};
 use std::fs;
 use tauri::api::path::app_config_dir;
@@ -20,11 +20,11 @@ impl ThemePlugin {
     pub fn init<R: Runtime>(_config: &mut Config) -> TauriPlugin<R, TauriConfig> {
         use tauri::RunEvent;
         Builder::new(PLUGIN_NAME)
-            .invoke_handler(generate_handler![get_theme, set_theme])
+            .invoke_handler(generate_handler![cmd_get_theme, cmd_set_theme])
             .on_event(|app, e| {
                 if let RunEvent::Ready = e {
                     let theme = saved_theme_value(&app.config());
-                    let _ = set_theme(app.clone(), theme);
+                    let _ = cmd_set_theme(app.clone(), theme);
                 }
             })
             .build()
@@ -33,10 +33,10 @@ impl ThemePlugin {
     #[cfg(target_os = "linux")]
     pub fn init<R: Runtime>(_config: &mut Config) -> TauriPlugin<R, TauriConfig> {
         Builder::new(PLUGIN_NAME)
-            .invoke_handler(generate_handler![get_theme, set_theme])
+            .invoke_handler(generate_handler![cmd_get_theme, cmd_set_theme])
             .setup(|app| {
                 let theme = saved_theme_value(&app.config());
-                let _ = set_theme(app.clone(), theme);
+                let _ = cmd_set_theme(app.clone(), theme);
                 Ok(())
             })
             .build()
@@ -46,11 +46,11 @@ impl ThemePlugin {
     pub fn init<R: Runtime>(config: &mut Config) -> TauriPlugin<R, TauriConfig> {
         use tauri::RunEvent;
         Builder::new(PLUGIN_NAME)
-            .invoke_handler(generate_handler![get_theme, set_theme])
+            .invoke_handler(generate_handler![cmd_get_theme, cmd_set_theme])
             .on_event(|app, e| {
                 if let RunEvent::Ready = e {
                     let theme = saved_theme_value(&app.config());
-                    let _ = set_theme(app.clone(), theme);
+                    let _ = cmd_set_theme(app.clone(), theme);
                 }
             })
             .build()
@@ -58,7 +58,7 @@ impl ThemePlugin {
 }
 
 #[command]
-fn get_theme<R: Runtime>(app: AppHandle<R>) -> Result<Theme, ()> {
+fn cmd_get_theme<R: Runtime>(app: AppHandle<R>) -> Result<Theme, ()> {
     let theme = saved_theme_value(&app.config());
     Ok(theme)
 }
@@ -91,7 +91,7 @@ impl ToString for Theme {
     }
 }
 
-pub fn saved_theme_value(config: &Config) -> Theme {
+pub(crate) fn saved_theme_value(config: &Config) -> Theme {
     let p = app_config_dir(config)
         .expect(ERROR_MESSAGE)
         .join(CONFIG_FILENAME);
@@ -100,11 +100,19 @@ pub fn saved_theme_value(config: &Config) -> Theme {
         .unwrap_or(Theme::Auto)
 }
 
-pub fn save_theme_value(config: &Config, theme: Theme) {
+pub(crate) fn save_theme_value(config: &Config, theme: Theme) {
     let dir = app_config_dir(config).expect(ERROR_MESSAGE);
     if !dir.exists() {
         let _ = std::fs::create_dir_all(&dir);
     }
     let p = dir.join(CONFIG_FILENAME);
     let _ = fs::write(p, theme.to_string());
+}
+
+pub fn set_theme<R: Runtime>(app: AppHandle<R>, theme: Theme) -> Result<(), &'static str>{
+    cmd_set_theme(app, theme)
+}
+
+pub fn get_theme<R: Runtime>(app: AppHandle<R>) -> Result<Theme, ()>{
+    cmd_get_theme(app)
 }
