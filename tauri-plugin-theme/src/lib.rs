@@ -38,7 +38,7 @@ pub fn init<R: Runtime>(_config: &mut Config) -> TauriPlugin<R> {
 #[cfg(target_os = "windows")]
 pub fn init<R: Runtime>(config: &mut Config) -> TauriPlugin<R> {
     let theme = saved_theme_value_from_config(&config);
-    for window in &mut config.tauri.windows {
+    for window in &mut config.app.windows {
         match theme {
             Theme::Auto => window.theme = None,
             Theme::Light => window.theme = Some(tauri::Theme::Light),
@@ -88,7 +88,7 @@ impl ToString for Theme {
 fn saved_theme_value_from_config(config: &Config) -> Theme {
     if let Some(dir) = dirs_next::config_dir() {
         let p = dir
-            .join(&config.tauri.bundle.identifier)
+            .join(&config.identifier)
             .join(CONFIG_FILENAME);
         return fs::read_to_string(p)
             .map(Theme::from)
