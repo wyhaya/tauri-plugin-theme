@@ -58,7 +58,7 @@ When you call `set_theme`, the theme will `auto saved`, when the App is restarte
 
 > If you're using tauri@v2 you'll also need to add the plugin's permissions file
 
-Add file `src-tauri/theme.json`
+Add file `src-tauri/capabilities/theme.json`
 
 ```json
 {
