@@ -62,7 +62,7 @@ Add file `src-tauri/capabilities/theme.json`
 
 ```json
 {
-  "$schema": "./schemas/desktop-schema.json",
+  "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "main-theme-capability",
   "description": "tauri-plugin-theme",
   "windows": ["main"],
