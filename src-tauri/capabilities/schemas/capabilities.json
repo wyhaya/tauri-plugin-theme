@@ -1,1 +1,1 @@
-{}
+{"main-capability":{"identifier":"main-capability","description":"","context":"local","windows":["main"],"permissions":["theme:allow-set-theme","theme:allow-get-theme","dialog:allow-message"],"platforms":["linux","macOS","windows","android","iOS"]}}
