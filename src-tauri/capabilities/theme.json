@@ -1,0 +1,12 @@
+{
+    "$schema": "../gen/schemas/desktop-schema.json",
+    "identifier": "main-capability",
+    "description": "",
+    "windows": ["main"],
+    "permissions": [
+      "theme:allow-set-theme",
+      "theme:allow-get-theme",
+      "dialog:allow-message"
+    ]
+  }
+  
