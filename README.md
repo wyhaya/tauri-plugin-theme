@@ -21,8 +21,6 @@ cargo add tauri-plugin-theme
 ```
 
 ```rust
-use tauri_plugin_theme::ThemePlugin;
-
 let mut ctx = tauri::generate_context!();
 tauri::Builder::default()
     // Init plugin and auto restore window theme !!!
