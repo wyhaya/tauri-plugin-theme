@@ -1,0 +1,4 @@
+"$schema" = "schemas/schema.json"
+[default]
+description = "Allow all"
+permissions = ["allow-set-theme", "allow-get-theme"]

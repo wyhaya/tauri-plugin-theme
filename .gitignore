@@ -1,6 +1,4 @@
 target/
 node_modules/
-dist/
 .DS_Store
-.vscode/
-tauri-plugin-theme/Cargo.lock
+Cargo.lock

@@ -4,20 +4,13 @@ Tauri currently doesn't support dynamically change app theme, this plugin makes 
 
 https://github.com/wyhaya/tauri-plugin-theme/assets/23690145/2422ce95-418d-4f07-adf5-e78af2552f51
 
-## Run example
-
-```
-cd [this-repo]
-pnpm i
-pnpm tauri dev
-```
-
 ## Install
 
-tauri-plugin-theme has been migrated to `tauri@v2`. If you use `tauri@v1`, please use `tauri-plugin-theme@0.2.0` version
-
 ```bash
-cargo add tauri-plugin-theme
+# For tauri@v1
+cargo add tauri-plugin-theme@1
+# For tauri@v2
+cargo add tauri-plugin-theme@2
 ```
 
 ```rust
@@ -52,19 +45,21 @@ invoke("plugin:theme|set_theme", {
 const theme = await invoke("plugin:theme|get_theme");
 ```
 
-When you call `set_theme`, the theme will `auto saved`, when the App is restarted, theme will be `auto restored`.
+When you call `set_theme`, the theme will be auto saved, and it will be restored auto after the App restart.
 
-> If you're using tauri@v2 you'll also need to add the plugin's permissions file
+### Tauri permissions
 
-Add file `src-tauri/capabilities/theme.json`
+If you're using `tauri@v2` you'll also need to add the plugin's permissions file
 
-```json
+Add to `src-tauri/capabilities/default.json`
+
+```json5
 {
-  "$schema": "../gen/schemas/desktop-schema.json",
-  "identifier": "main-theme-capability",
-  "description": "tauri-plugin-theme",
-  "windows": ["main"],
-  "permissions": ["theme:allow-set-theme", "theme:allow-get-theme"]
+  ...
+    "permissions": [
+        ...
+        "theme:default"
+    ]
 }
 ```
 
