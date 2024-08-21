@@ -87,9 +87,7 @@ impl ToString for Theme {
 #[cfg(target_os = "windows")]
 fn saved_theme_value_from_config(config: &Config) -> Theme {
     if let Some(dir) = dirs_next::config_dir() {
-        let p = dir
-            .join(&config.identifier)
-            .join(CONFIG_FILENAME);
+        let p = dir.join(&config.identifier).join(CONFIG_FILENAME);
         return fs::read_to_string(p)
             .map(Theme::from)
             .unwrap_or(Theme::Auto);
