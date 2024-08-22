@@ -65,11 +65,11 @@ Add to `src-tauri/capabilities/default.json`
 
 ## Support
 
-| MacOS | Linux | Windows |
-| ----- | ----- | ------- |
-| ✅    | ✅    | ✅      |
+| MacOS | Linux | Windows | Android | iOS |
+| ----- | ----- | ------- | ------- | ------- |
+| ✅    | ✅    | ✅      | ❌      | ❌
 
 ## Note
 
 - On `Windows` platform, when calling `set_theme`, the app will restart.
-- On `Linux` platform, it has not been extensively tested. If you encounter any issues, please submit an issue.
+- On `Linux` platform, it has not been extensively tested.
