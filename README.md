@@ -69,7 +69,14 @@ Add to `src-tauri/capabilities/default.json`
 | ----- | ----- | ------- | ------- | ------- |
 | ✅    | ✅    | ✅      | ❌      | ❌
 
-## Note
+## NOTE
 
-- On `Windows` platform, when calling `set_theme`, the app will restart.
-- On `Linux` platform, it has not been extensively tested.
+### For Windows
+
+Requires WebView2 Runtime version 101.0.1210.39(May 9, 2022) or higher; otherwise, the app will complete the theme change by `restart`.
+
+See: [https://learn.microsoft.com/en-us/microsoft-edge/webview2/release-notes/archive?tabs=dotnetcsharp#10121039](https://learn.microsoft.com/en-us/microsoft-edge/webview2/release-notes/archive?tabs=dotnetcsharp#10121039)
+
+### For Linux
+
+On Linux platform, it has not been extensively tested.

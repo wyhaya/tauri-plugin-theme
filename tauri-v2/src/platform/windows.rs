@@ -7,6 +7,7 @@ use windows_core::Interface;
 
 #[command]
 pub fn set_theme<R: Runtime>(app: AppHandle<R>, theme: Theme) -> Result<(), &'static str> {
+    save_theme_value(&app, theme);
     let err = Arc::new(AtomicU8::new(0));
     for (_, window) in app.webview_windows() {
         // Window
@@ -59,7 +60,6 @@ pub fn set_theme<R: Runtime>(app: AppHandle<R>, theme: Theme) -> Result<(), &'st
             _ => {}
         }
     }
-    save_theme_value(&app, theme);
     Ok(())
 }
 

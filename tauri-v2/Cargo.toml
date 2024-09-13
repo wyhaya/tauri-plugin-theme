@@ -18,6 +18,7 @@ serde = { version = "1.0", features = ["derive"] }
 
 [target."cfg(target_os = \"macos\")".dependencies]
 cocoa = "0.26"
+dirs-next = "2.0"
 
 [target."cfg(target_os = \"linux\")".dependencies]
 gtk = "0.18"
@@ -26,6 +27,7 @@ futures-lite = "2.3"
 tokio = { version = "1", features = ["macros"] }
 
 [target."cfg(target_os = \"windows\")".dependencies]
+dirs-next = "2.0"
 webview2-com = "0.33"
 windows = "0.58"
 windows-core = "0.58"

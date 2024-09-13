@@ -1,21 +1,34 @@
+#![allow(unused_variables)]
+
 mod platform;
 
 use platform::set_theme;
 use serde::{Deserialize, Serialize};
 use std::fs;
 use tauri::plugin::{Builder, TauriPlugin};
-use tauri::{command, generate_handler, AppHandle, Manager, RunEvent, Runtime};
+use tauri::{command, generate_handler, AppHandle, Config, Manager, Runtime};
 
 const CONFIG_FILENAME: &str = "tauri-plugin-theme";
 const ERROR_MESSAGE: &str = "Get app config dir failed";
 
-pub fn init<R: Runtime>() -> TauriPlugin<R> {
+pub fn init<R: Runtime>(config: &mut Config) -> TauriPlugin<R> {
+    #[cfg(any(target_os = "macos", target_os = "windows"))]
+    {
+        let theme = saved_theme_value_from_config(&config);
+        for window in &mut config.app.windows {
+            match theme {
+                Theme::Auto => window.theme = None,
+                Theme::Light => window.theme = Some(tauri::Theme::Light),
+                Theme::Dark => window.theme = Some(tauri::Theme::Dark),
+            }
+        }
+    }
     Builder::new("theme")
         .invoke_handler(generate_handler![get_theme, set_theme])
         .on_event(|app, e| {
-            if let RunEvent::Ready = e {
-                let theme = saved_theme_value(&app);
-                if let Err(err) = set_theme(app.clone(), theme) {
+            #[cfg(target_os = "linux")]
+            if let tauri::RunEvent::Ready = e {
+                if let Err(err) = set_theme(app.clone(), saved_theme_value(&app)) {
                     eprintln!("Failed to set theme: {}", err);
                 }
             }
@@ -55,6 +68,17 @@ impl ToString for Theme {
 fn get_theme<R: Runtime>(app: AppHandle<R>) -> Result<Theme, ()> {
     let theme = saved_theme_value(&app);
     Ok(theme)
+}
+
+#[cfg(any(target_os = "macos", target_os = "windows"))]
+fn saved_theme_value_from_config(config: &Config) -> Theme {
+    if let Some(dir) = dirs_next::config_dir() {
+        let p = dir.join(&config.identifier).join(CONFIG_FILENAME);
+        return fs::read_to_string(p)
+            .map(Theme::from)
+            .unwrap_or(Theme::Auto);
+    }
+    Theme::Auto
 }
 
 fn saved_theme_value<R: Runtime>(app: &AppHandle<R>) -> Theme {
