@@ -26,31 +26,23 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-            tauri-v1/target/
-            tauri-v2/target/
+            target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Setup Rust
         run: |
           rustup update
-          rustup target add ${{ matrix.job.target }}
 
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
         run: |
           sudo apt update
-          sudo apt install libwebkit2gtk-4.0-dev build-essential curl wget file libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev -y
-          sudo apt install libwebkit2gtk-4.1-dev libxdo-dev -y
+          sudo apt install libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev -y
 
       - name: Cargo fmt
         run: |
-          cd tauri-v1 && cargo fmt --all -- --check && cd ..
-          cd tauri-v2 && cargo fmt --all -- --check && cd ..
+          cargo fmt --all -- --check
 
-      - name: Cargo build v1
+      - name: Cargo build
         run: |
-          cd tauri-v1 && cargo build --target ${{ matrix.job.target }} && cd ..
-
-      - name: Cargo build v2
-        run: |
-          cd tauri-v2 && cargo build --target ${{ matrix.job.target }} && cd ..
+          cargo build --target ${{ matrix.job.target }}

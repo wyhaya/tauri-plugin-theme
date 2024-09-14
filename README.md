@@ -4,13 +4,13 @@ Tauri currently doesn't support dynamically change app theme, this plugin makes 
 
 https://github.com/wyhaya/tauri-plugin-theme/assets/23690145/2422ce95-418d-4f07-adf5-e78af2552f51
 
+> [!NOTE]  
+> This only applies to the `Tauri 2x` version. If you are using the Tauri 1x version, please refer to [tauri-1x-version](https://github.com/wyhaya/tauri-plugin-theme/tree/tauri-1x-version).
+
 ## Install
 
 ```bash
-# For tauri@v1
-cargo add tauri-plugin-theme@1
-# For tauri@v2
-cargo add tauri-plugin-theme@2
+cargo add tauri-plugin-theme@2.1.0
 ```
 
 ```rust
@@ -21,6 +21,20 @@ tauri::Builder::default()
     // ...
     .run(ctx)
     // ...
+```
+
+### Tauri permissions
+
+Add to `src-tauri/capabilities/default.json`
+
+```json5
+{
+  ...
+    "permissions": [
+        ...
+        "theme:default"
+    ]
+}
 ```
 
 ## Usage
@@ -47,27 +61,11 @@ const theme = await invoke("plugin:theme|get_theme");
 
 When you call `set_theme`, the theme will be auto saved, and it will be restored auto after the App restart.
 
-### Tauri permissions
-
-If you're using `tauri@v2` you'll also need to add the plugin's permissions file
-
-Add to `src-tauri/capabilities/default.json`
-
-```json5
-{
-  ...
-    "permissions": [
-        ...
-        "theme:default"
-    ]
-}
-```
-
 ## Support
 
 | MacOS | Linux | Windows | Android | iOS |
-| ----- | ----- | ------- | ------- | ------- |
-| ✅    | ✅    | ✅      | ❌      | ❌
+| ----- | ----- | ------- | ------- | --- |
+| ✅    | ✅    | ✅      | ❌      | ❌  |
 
 ## NOTE
 
