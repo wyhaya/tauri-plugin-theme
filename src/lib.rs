@@ -12,7 +12,7 @@ const CONFIG_FILENAME: &str = "tauri-plugin-theme";
 const ERROR_MESSAGE: &str = "Get app config dir failed";
 
 pub fn init<R: Runtime>(config: &mut Config) -> TauriPlugin<R> {
-    #[cfg(any(target_os = "macos", target_os = "windows"))]
+    #[cfg(target_os = "windows")]
     {
         let theme = saved_theme_value_from_config(config);
         for window in &mut config.app.windows {
@@ -26,9 +26,9 @@ pub fn init<R: Runtime>(config: &mut Config) -> TauriPlugin<R> {
     Builder::new("theme")
         .invoke_handler(generate_handler![get_theme, set_theme])
         .on_event(|app, e| {
-            #[cfg(target_os = "linux")]
+            #[cfg(any(target_os = "macos", target_os = "linux"))]
             if let tauri::RunEvent::Ready = e {
-                if let Err(err) = set_theme(app.clone(), saved_theme_value(&app)) {
+                if let Err(err) = set_theme(app.clone(), saved_theme_value(app)) {
                     eprintln!("Failed to set theme: {}", err);
                 }
             }
@@ -70,7 +70,7 @@ fn get_theme<R: Runtime>(app: AppHandle<R>) -> Result<Theme, ()> {
     Ok(theme)
 }
 
-#[cfg(any(target_os = "macos", target_os = "windows"))]
+#[cfg(target_os = "windows")]
 fn saved_theme_value_from_config(config: &Config) -> Theme {
     if let Some(dir) = dirs_next::config_dir() {
         let p = dir.join(&config.identifier).join(CONFIG_FILENAME);

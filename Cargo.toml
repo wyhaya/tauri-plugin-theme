@@ -1,7 +1,7 @@
 [package]
 name = "tauri-plugin-theme"
 links = "tauri-plugin-theme"
-version = "2.1.0"
+version = "2.1.1"
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/wyhaya/tauri-plugin-theme"
