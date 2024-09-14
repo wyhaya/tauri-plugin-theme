@@ -14,7 +14,7 @@ const ERROR_MESSAGE: &str = "Get app config dir failed";
 pub fn init<R: Runtime>(config: &mut Config) -> TauriPlugin<R> {
     #[cfg(any(target_os = "macos", target_os = "windows"))]
     {
-        let theme = saved_theme_value_from_config(&config);
+        let theme = saved_theme_value_from_config(config);
         for window in &mut config.app.windows {
             match theme {
                 Theme::Auto => window.theme = None,
@@ -54,12 +54,12 @@ impl From<String> for Theme {
     }
 }
 
-impl ToString for Theme {
-    fn to_string(&self) -> String {
+impl std::fmt::Display for Theme {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Theme::Auto => "auto".into(),
-            Theme::Light => "light".into(),
-            Theme::Dark => "dark".into(),
+            Theme::Auto => write!(f, "auto"),
+            Theme::Light => write!(f, "light"),
+            Theme::Dark => write!(f, "dark"),
         }
     }
 }

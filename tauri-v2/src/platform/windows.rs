@@ -1,6 +1,4 @@
 use crate::{save_theme_value, Theme};
-use std::sync::atomic::{AtomicU8, Ordering};
-use std::sync::Arc;
 use tauri::{command, AppHandle, Manager, Runtime};
 use webview2_com::Microsoft::Web::WebView2::Win32::*;
 use windows_core::Interface;
@@ -8,57 +6,30 @@ use windows_core::Interface;
 #[command]
 pub fn set_theme<R: Runtime>(app: AppHandle<R>, theme: Theme) -> Result<(), &'static str> {
     save_theme_value(&app, theme);
-    let err = Arc::new(AtomicU8::new(0));
     for (_, window) in app.webview_windows() {
+        let (app, app2) = (app.clone(), app.clone());
         // Window
-        let hwnd = window.hwnd().map_err(|_| "Invalid window handle")?;
+        let hwnd = window.hwnd().unwrap_or_else(|_| app.restart());
         darkmode::try_window_theme(hwnd, theme, false);
-
         // Webview
-        let (err, err2) = (err.clone(), err.clone());
-        let rst = window.with_webview(move |view| unsafe {
-            let controller = view.controller();
-            let coreview = match controller.CoreWebView2() {
-                Ok(coreview) => coreview,
-                Err(_) => {
-                    err.store(1, Ordering::SeqCst);
-                    return;
-                }
-            };
-            let webview = match coreview.cast::<ICoreWebView2_13>() {
-                Ok(webview) => webview,
-                Err(_) => {
-                    err.store(2, Ordering::SeqCst);
-                    return;
-                }
-            };
-            let profile = match webview.Profile() {
-                Ok(profile) => profile,
-                Err(_) => {
-                    err.store(3, Ordering::SeqCst);
-                    return;
-                }
-            };
-            let theme = match theme {
-                Theme::Dark => COREWEBVIEW2_PREFERRED_COLOR_SCHEME_DARK,
-                Theme::Light => COREWEBVIEW2_PREFERRED_COLOR_SCHEME_LIGHT,
-                Theme::Auto => COREWEBVIEW2_PREFERRED_COLOR_SCHEME_AUTO,
-            };
-            if let Err(_) = profile.SetPreferredColorScheme(theme) {
-                err.store(4, Ordering::SeqCst);
-                return;
-            }
-        });
-        if let Err(_) = rst {
-            return Err("Get webview error");
-        }
-        match err2.load(Ordering::SeqCst) {
-            1 => return Err("Get CoreWebView2 error"),
-            2 => return Err("Get ICoreWebView2_13 error"),
-            3 => return Err("Get webview.Profile error"),
-            4 => return Err("Set SetPreferredColorScheme error"),
-            _ => {}
-        }
+        window
+            .with_webview(move |view| unsafe {
+                let controller = view.controller();
+                let coreview = controller.CoreWebView2().unwrap_or_else(|_| app.restart());
+                let webview = coreview
+                    .cast::<ICoreWebView2_13>()
+                    .unwrap_or_else(|_| app.restart());
+                let profile = webview.Profile().unwrap_or_else(|_| app.restart());
+                let theme = match theme {
+                    Theme::Dark => COREWEBVIEW2_PREFERRED_COLOR_SCHEME_DARK,
+                    Theme::Light => COREWEBVIEW2_PREFERRED_COLOR_SCHEME_LIGHT,
+                    Theme::Auto => COREWEBVIEW2_PREFERRED_COLOR_SCHEME_AUTO,
+                };
+                profile
+                    .SetPreferredColorScheme(theme)
+                    .unwrap_or_else(|_| app.restart());
+            })
+            .unwrap_or_else(|_| app2.restart());
     }
     Ok(())
 }
