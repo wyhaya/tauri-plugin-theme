@@ -5,7 +5,7 @@ Allow all
 - `allow-set-theme`
 - `allow-get-theme`
 
-## Permission Table 
+## Permission Table
 
 <table>
 <tr>

@@ -295,39 +295,29 @@
       "type": "string",
       "oneOf": [
         {
-          "description": "allow-get-theme -> Enables the get_theme command without any pre-configured scope.",
+          "description": "Enables the get_theme command without any pre-configured scope.",
           "type": "string",
-          "enum": [
-            "allow-get-theme"
-          ]
+          "const": "allow-get-theme"
         },
         {
-          "description": "deny-get-theme -> Denies the get_theme command without any pre-configured scope.",
+          "description": "Denies the get_theme command without any pre-configured scope.",
           "type": "string",
-          "enum": [
-            "deny-get-theme"
-          ]
+          "const": "deny-get-theme"
         },
         {
-          "description": "allow-set-theme -> Enables the set_theme command without any pre-configured scope.",
+          "description": "Enables the set_theme command without any pre-configured scope.",
           "type": "string",
-          "enum": [
-            "allow-set-theme"
-          ]
+          "const": "allow-set-theme"
         },
         {
-          "description": "deny-set-theme -> Denies the set_theme command without any pre-configured scope.",
+          "description": "Denies the set_theme command without any pre-configured scope.",
           "type": "string",
-          "enum": [
-            "deny-set-theme"
-          ]
+          "const": "deny-set-theme"
         },
         {
-          "description": "default -> Allow all",
+          "description": "Allow all",
           "type": "string",
-          "enum": [
-            "default"
-          ]
+          "const": "default"
         }
       ]
     }
