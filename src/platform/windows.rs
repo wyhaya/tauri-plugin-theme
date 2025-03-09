@@ -48,12 +48,13 @@ mod darkmode {
     use windows::{
         core::{s, w, PCSTR, PSTR},
         Win32::{
-            Foundation::{BOOL, HANDLE, HMODULE, HWND, WPARAM},
+            Foundation::{HANDLE, HMODULE, HWND, WPARAM, LPARAM},
             Graphics::Dwm::{DwmSetWindowAttribute, DWMWA_USE_IMMERSIVE_DARK_MODE},
             System::LibraryLoader::*,
             UI::{Accessibility::*, WindowsAndMessaging::*},
         },
     };
+    use windows_core::BOOL;
 
     static HUXTHEME: LazyLock<isize> =
         LazyLock::new(|| unsafe { LoadLibraryA(s!("uxtheme.dll")).unwrap_or_default().0 as _ });
@@ -97,7 +98,7 @@ mod darkmode {
                     let _ = SetPropW(
                         hwnd,
                         w!("UseImmersiveDarkModeColors"),
-                        HANDLE(&mut is_dark_mode_bigbool as *mut _ as _),
+                        Some(HANDLE(&mut is_dark_mode_bigbool as *mut _ as _)),
                     );
                 }
             } else {
@@ -111,8 +112,8 @@ mod darkmode {
                     );
                 }
                 if redraw_title_bar {
-                    unsafe { DefWindowProcW(hwnd, WM_NCACTIVATE, None, None) };
-                    unsafe { DefWindowProcW(hwnd, WM_NCACTIVATE, WPARAM(true.into()), None) };
+                    unsafe { DefWindowProcW(hwnd, WM_NCACTIVATE, WPARAM(0), LPARAM(0)) };
+                    unsafe { DefWindowProcW(hwnd, WM_NCACTIVATE, WPARAM(1), LPARAM(0)) };
                 }
             }
         }

@@ -1,7 +1,7 @@
 [package]
 name = "tauri-plugin-theme"
 links = "tauri-plugin-theme"
-version = "2.1.2"
+version = "2.1.3"
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/wyhaya/tauri-plugin-theme"
@@ -10,10 +10,10 @@ keywords = ["tauri", "plugin", "theme"]
 readme = "README.md"
 
 [build-dependencies]
-tauri-plugin = { version = "2.0", features = ["build"] }
+tauri-plugin = { version = "2.0.5", features = ["build"] }
 
 [dependencies]
-tauri = { version = "2.0" }
+tauri = { version = "2.3.1" }
 serde = { version = "1.0", features = ["derive"] }
 
 [target."cfg(target_os = \"macos\")".dependencies]
@@ -23,13 +23,13 @@ dirs-next = "2.0"
 [target."cfg(target_os = \"linux\")".dependencies]
 gtk = "0.18"
 tintanum = "0.1"
-futures-lite = "2.3"
+futures-lite = "2.6.0"
 tokio = { version = "1", features = ["macros"] }
 
 [target."cfg(target_os = \"windows\")".dependencies]
 dirs-next = "2.0"
-webview2-com = "0.33"
-windows = "0.58"
-windows-core = "0.58"
-windows-version = "0.1"
+webview2-com = "0.36.0"
+windows = "0.60.0"
+windows-core = "0.60.1"
+windows-version = "0.1.3"
  
