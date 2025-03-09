@@ -10,7 +10,7 @@ https://github.com/wyhaya/tauri-plugin-theme/assets/23690145/2422ce95-418d-4f07-
 ## Install
 
 ```bash
-cargo add tauri-plugin-theme@2.1.2
+cargo add tauri-plugin-theme
 ```
 
 ```rust
