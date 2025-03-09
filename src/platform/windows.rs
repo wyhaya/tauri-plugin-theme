@@ -48,7 +48,7 @@ mod darkmode {
     use windows::{
         core::{s, w, PCSTR, PSTR},
         Win32::{
-            Foundation::{HANDLE, HMODULE, HWND, WPARAM, LPARAM},
+            Foundation::{HANDLE, HMODULE, HWND, LPARAM, WPARAM},
             Graphics::Dwm::{DwmSetWindowAttribute, DWMWA_USE_IMMERSIVE_DARK_MODE},
             System::LibraryLoader::*,
             UI::{Accessibility::*, WindowsAndMessaging::*},
