@@ -1,3 +1,7 @@
+> [!WARNING]
+> This plugin is no longer maintained, and Tauri official provides a better API.
+> https://v2.tauri.app/reference/javascript/api/namespaceapp/#settheme
+
 # tauri-plugin-theme
 
 Tauri currently doesn't support dynamically change app theme, this plugin makes up for that.
